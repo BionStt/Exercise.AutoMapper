@@ -21,9 +21,14 @@ namespace Exercise.AutoMapper.WithAutoFac
 
             var scope = builder.Build().BeginLifetimeScope();
 
-            Mapper.Initialize(conf => conf.AddProfile(new AutoMapperProfile(scope)));
+            IConfigurationProvider provider = new MapperConfiguration(conf => conf.AddProfile(new AutoMapperProfile(scope)));
 
-            User user = Mapper.Map<User>(new UserData());
+            IMapper mapper = provider.CreateMapper();
+
+            // Init static mapper ->
+            // Mapper.Initialize(conf => conf.AddProfile(new AutoMapperProfile(scope)));
+
+            User user = mapper.Map<User>(new UserData());
 
             user.WriteName();
 
